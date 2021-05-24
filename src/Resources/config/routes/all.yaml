@@ -1,0 +1,6 @@
+site_admin:
+  prefix: /admin
+  resource: '@PageBundle/Resources/config/routes/admin.yaml'
+
+site:
+  resource: '@PageBundle/Resources/config/routes/site.yaml'

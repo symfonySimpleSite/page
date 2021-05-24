@@ -1,0 +1,9 @@
+site_index:
+  path: /
+  controller: 'SymfonySimpleSite\Page\Controller\PageController::index'
+
+site_page:
+  path: /page/{path}
+  requirements:
+    path: '^([a-z-0-9\.\-\/]+)$'
+  controller: 'SymfonySimpleSite\Page\Controller\PageController::page'
