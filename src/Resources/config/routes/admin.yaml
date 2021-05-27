@@ -1,15 +1,15 @@
-admin_article_index:
-  path: /article
-  controller: 'SymfonySimpleSite\Page\Controller\ArticleAdminController::index'
+admin_page_index:
+  path: /
+  controller: 'SymfonySimpleSite\Page\Controller\AdminController::index'
 
-admin_article_create:
-  path: /article/create
-  controller: 'SymfonySimpleSite\Page\Controller\ArticleAdminController::save'
+admin_page_create:
+  path: /create
+  controller: 'SymfonySimpleSite\Page\Controller\AdminController::save'
 
-admin_article_edit:
-  path: /article/edit/{id}
-  controller: 'SymfonySimpleSite\Page\Controller\ArticleAdminController::save'
+admin_page_edit:
+  path: /edit/{id}
+  controller: 'SymfonySimpleSite\Page\Controller\AdminController::save'
 
-admin_article_delete:
-  path: /article/delete/{id}
-  controller: 'SymfonySimpleSite\Page\Controller\ArticleAdminController::delete'
+admin_page_delete:
+  path: /delete/{id}
+  controller: 'SymfonySimpleSite\Page\Controller\AdminController::delete'

@@ -1,0 +1,43 @@
+{% extends template  %}
+
+{% block title %}Page Admin{% endblock %}
+
+{% block h1 %}Page Admin{% endblock %}
+
+{% block body %}
+    <p><a href="{{ path('admin_page_create') }}">Add new</a></p>
+
+    <div class="count">
+      <p>Found:  {{ pagination.getTotalItemCount }}</p>
+    </div>
+    <table border="1" width="100%">
+        <tr bgcolor="#c0c0c0">
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'Id', alias~'.id') }}</th>
+            <th{% if pagination.isSorted(alias~'.Title') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Title', alias~'.title') }}
+            </th>
+            <th{% if pagination.isSorted([alias~'.createdDate']) %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'CreatedAf', [alias~'.createdDate']) }}
+            </th>
+            <th>Actions</th>
+        </tr>
+
+        {# table body #}
+        {% for page in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ page.id }}</td>
+                <td>{{ page.title }}</td>
+                <td align="center">{{ page.createdDate | date('Y-m-d') }}</td>
+                <td align="right">
+                    <a href="{{ path("admin_page_edit", {id: page.id}) }}">Edit</a> /
+                    <a href="{{ path("admin_page_delete", {id: page.id}) }}" onclick="confirm('Delete this item?')">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}

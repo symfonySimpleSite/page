@@ -1,6 +1,6 @@
-site_admin:
-  prefix: /admin
+page_admin:
+  prefix: /admin/page
   resource: '@PageBundle/Resources/config/routes/admin.yaml'
 
-site:
+page_forntend:
   resource: '@PageBundle/Resources/config/routes/site.yaml'

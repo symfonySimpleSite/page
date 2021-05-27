@@ -1,0 +1,13 @@
+{% extends template  %}
+
+{% block title %}Save Page{% endblock %}
+
+{% block h1 %}Save Page{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <p><a href="{{ path('admin_page_index') }}">Cancel</a> | <button type="submit">Save</button> </p>
+    {{ form_end(form) }}
+
+{% endblock %}

@@ -12,16 +12,11 @@ class PageExtension extends Extension
 {
     public function prepend(ContainerBuilder $container): void
     {
-/*
-        $container->prependExtensionConfig(SymfonySimpleSitePageBundle::getConfigName(), [
-            'images_path' => [
+
+      /*  $container->prependExtensionConfig(PageBundle::getConfigName(), [
+            'page_bundle' => [
                 [
-                    'dir' => 'articles',
-                      'small' => [
-                          'width' => 120,
-                          'height' => 120,
-                          'path' => 'small'
-                      ]
+                    'layout' => 'base.html.twig'
                 ]
             ]
         ]);*/
@@ -32,7 +27,7 @@ class PageExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-
+  //      dump($config); die;
         $container->setParameter(PageBundle::getConfigName(), $config);
 
         $loader = new YamlFileLoader(

@@ -1,0 +1,29 @@
+{% extends template %}
+
+{% block title %}{{ page.title }}{% endblock %}
+{% block h1 %}{{ page.title }}{% endblock %}
+
+{% block body %}
+
+    <p><a href="{{ path('admin_page_create') }}">Add new</a></p>
+
+    <!-- Media object -->
+
+    <div class="count">
+        <p>Found:  {{ pagination.getTotalItemCount }}</p>
+    </div>
+
+    {% for page in pagination %}
+        <div class="container__media">
+            Image
+        </div>
+
+        <!-- Main content -->
+        <div class="container__content">
+            {{ page.preview }}
+        </div>
+
+    {% endfor %}
+
+
+{% endblock %}

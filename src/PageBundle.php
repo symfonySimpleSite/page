@@ -14,7 +14,7 @@ class PageBundle extends Bundle
 
     public static function getConfigName(): string
     {
-        return 'PageBundle';
+        return 'page';
     }
 }
 

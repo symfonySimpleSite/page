@@ -14,9 +14,13 @@ class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-            ->scalarNode('some_value')->defaultValue('some value 11')->end()
+                ->arrayNode('template')->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('default')->defaultTrue()->defaultValue('base.html.twig')->end()
+                        ->scalarNode('site_index')->defaultTrue()->defaultValue('base.html.twig')->end()
+                    ->end()
+                ->end() // twitter
             ->end();
-
         return $treeBuilder;
     }
 }
