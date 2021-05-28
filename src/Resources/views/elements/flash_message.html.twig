@@ -1,0 +1,12 @@
+{% for type, messages in app.session.flashbag.all() %}
+    {% for message in messages %}
+        {% if type == constant('SymfonySimpleSite\\Page\\Controller\\AbstractPageController::FLUSH_ERROR_KEY') %}
+            <p>Error!</p> <p>{{ message }}</p>
+        {% endif %}
+
+        {% if type == constant('SymfonySimpleSite\\Page\\Controller\\AbstractPageController::FLUSH_SUCCESS_KEY') %}
+            <p>Success!</p> <p>{{ message }}</p>
+        {% endif %}
+
+    {% endfor %}
+{% endfor %}

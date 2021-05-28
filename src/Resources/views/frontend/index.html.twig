@@ -1,29 +1,31 @@
 {% extends template %}
 
-{% block title %}{{ page.title }}{% endblock %}
-{% block h1 %}{{ page.title }}{% endblock %}
+{% block title %}{{ page.title is defined ? page.title : 'Empty Main Page' }}{% endblock %}
+{% block h1 %}{{ page.title is defined ? page.title : 'Empty Main Page' }}{% endblock %}
 
 {% block body %}
 
     <p><a href="{{ path('admin_page_create') }}">Add new</a></p>
-
     <!-- Media object -->
 
-    <div class="count">
-        <p>Found:  {{ pagination.getTotalItemCount }}</p>
+    {% if recentlyItems is not empty %}
+        <h3>Recently</h3>
+        {% include '@Page/frontend/preview_items.html.twig' with {items: recentlyItems} %}
+        <hr>
+    {% endif %}
+
+    <div class="container__content">
+        {{ page.preview is defined ? page.preview : '' }}
     </div>
 
-    {% for page in pagination %}
+    {% if page.image is defined and page.image is not empty %}
         <div class="container__media">
-            Image
+            <img src="{{ params.image.url_path ~ '/big_' ~ page.image }}" alt="{{ page.title }}">
         </div>
+    {% endif %}
 
-        <!-- Main content -->
-        <div class="container__content">
-            {{ page.preview }}
-        </div>
-
-    {% endfor %}
-
-
+    <!-- Main content -->
+    <div class="container__content">
+        {{ page.body is defined ? page.body : '' }}
+    </div>
 {% endblock %}

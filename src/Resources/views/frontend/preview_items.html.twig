@@ -1,0 +1,17 @@
+{% for pageItem in items %}
+
+    {% if pageItem.image is not empty %}
+        <div class="container__media">
+            <a href="{{ path('page_detail', {url: pageItem.url}) }}">
+                <img src="{{ params.image.url_path ~ '/small_' ~ pageItem.image }}" alt="{{ pageItem.title }}">
+            </a>
+        </div>
+    {% endif %}
+
+    <!-- Main content -->
+    <div class="container__content">
+        {{ pageItem.preview }}
+        <a href="{{ path('page_detail', {url: pageItem.url}) }}">more ..</a>
+    </div>
+
+{% endfor %}
