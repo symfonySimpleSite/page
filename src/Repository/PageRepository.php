@@ -27,6 +27,27 @@ class PageRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
+    public function getMainPage(int $recentlyLength): array
+    {
+        $page = $this->getItemsQueryBuilderByUrl("/")->getQuery()->getOneOrNullResult();
+        if (empty($page)) {
+            return [];
+        }
+
+        $queryBuilder = $this
+            ->getItemsQueryBuilder()
+            ->andWhere("{$this->getAlias()}.isRecentlyPreview=:true")
+            ->setParameter("true", true)
+            ->setMaxResults($recentlyLength)
+            ->orderBy("{$this->getAlias()}.createdDate", "DESC");
+
+        return [
+            'page' => $page,
+            'pageItems' => $this->getItemsQueryBuilderByParentId($page->getId()),
+            'recentlyItems' => $queryBuilder->getQuery()->getResult()
+        ];
+    }
+
     public function getItemsQueryBuilderByUrl(string $url): QueryBuilder
     {
         $queryBuilder = $this

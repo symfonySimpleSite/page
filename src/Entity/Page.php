@@ -2,6 +2,12 @@
 
 namespace SymfonySimpleSite\Page\Entity;
 
+use SymfonySimpleSite\Page\Entity\Interfaces\ImageInterface;
+use SymfonySimpleSite\Page\Entity\Interfaces\RecentlyPreviewInterface;
+use SymfonySimpleSite\Page\Entity\Interfaces\TemplateInterface;
+use SymfonySimpleSite\Page\Entity\Traits\ImageTrait;
+use SymfonySimpleSite\Page\Entity\Traits\RecentlyPreviewTrait;
+use SymfonySimpleSite\Page\Entity\Traits\TemplateTrait;
 use SymfonySimpleSite\Page\Repository\PageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,8 +19,10 @@ use Doctrine\ORM\Mapping as ORM;
  *     }
  * )
  */
-class Page
+class Page implements ImageInterface, TemplateInterface, RecentlyPreviewInterface
 {
+    use ImageTrait, TemplateTrait, RecentlyPreviewTrait;
+
     public const STATUS_ACTIVE = 1;
     public const TYPE_PAGE = 1;
     public const TYPE_SECTION = 2;
@@ -25,67 +33,62 @@ class Page
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $url;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $keywords;
+    private ?string $url = "";
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
-    private $description;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $preview;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $body;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $type;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $status;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $image;
+    private ?string $keywords;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $preview;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $body;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private ?int $type;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private ?int $status;
 
     /**
      * @ORM\ManyToOne(targetEntity=Page::class)
      */
-    private $parent;
+    private ?Page $parent = null;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $createdDate;
+    private ? \DateTime $createdDate;
 
     public function getId(): ?int
     {
@@ -97,7 +100,7 @@ class Page
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -109,7 +112,7 @@ class Page
         return $this->url;
     }
 
-    public function setUrl(string $url): self
+    public function setUrl(?string $url): self
     {
         $this->url = $url;
 
@@ -121,7 +124,7 @@ class Page
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
@@ -200,24 +203,12 @@ class Page
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
     public function getParent(): ?self
     {
         return $this->parent;
     }
 
-    public function setParent(?self $parent): self
+    public function setParent(?Page $parent): self
     {
         $this->parent = $parent;
 

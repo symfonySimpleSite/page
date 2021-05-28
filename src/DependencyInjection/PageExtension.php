@@ -12,14 +12,7 @@ class PageExtension extends Extension
 {
     public function prepend(ContainerBuilder $container): void
     {
-
-      /*  $container->prependExtensionConfig(PageBundle::getConfigName(), [
-            'page_bundle' => [
-                [
-                    'layout' => 'base.html.twig'
-                ]
-            ]
-        ]);*/
+        //TODO: do preload extension
     }
 
 
@@ -27,8 +20,9 @@ class PageExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-  //      dump($config); die;
+        $config['projectDir'] = $container->getParameter('kernel.project_dir');
         $container->setParameter(PageBundle::getConfigName(), $config);
+        $container->setParameter('twig.globals', $config);
 
         $loader = new YamlFileLoader(
             $container,

@@ -12,12 +12,21 @@ use SymfonySimpleSite\Page\Service\GetTemplateService;
 
 class PageController extends AbstractPageController
 {
-    public function index(
+    public function index(PageRepository $pageRepository): Response
+    {
+        return $this->render('@Page/frontend/index.html.twig', [
+            'template' => $this->getTemplate(),
+            'params' => $this->get('parameter_bag')->get(PageBundle::getConfigName()),
+        ] + $pageRepository->getMainPage(5));
+    }
+
+    public function detail(
         Request $request,
         PaginatorInterface $paginator,
         PageRepository $pageRepository,
         ?string $url = null
-    ): Response {
+    ): Response
+    {
 
         if (empty($url)) {
             $url = 'page';
@@ -25,12 +34,13 @@ class PageController extends AbstractPageController
 
         $page =
             $pageRepository->getItemsQueryBuilderByUrl($url)
-            ->getQuery()
-            ->getOneOrNullResult();
+                ->getQuery()
+                ->getOneOrNullResult();
 
         $params = [
             'page' => $page,
-            'template' => $this->template
+            'template' => $this->getTemplate(),
+            'params' => $this->get('parameter_bag')->get(PageBundle::getConfigName())
         ];
         $template = 'detail';
 
@@ -41,10 +51,10 @@ class PageController extends AbstractPageController
                     $request->query->getInt('page', 1)
                 );
 
-            $template = 'index';
+            $template = 'section';
         }
 
-        return $this->render('@Page/frontend/'.$template.'.html.twig', $params);
+        return $this->render('@Page/frontend/' . $template . '.html.twig', $params);
     }
 
 }

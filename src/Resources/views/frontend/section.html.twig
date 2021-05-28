@@ -1,0 +1,33 @@
+{% extends template %}
+
+{% block title %}{{ page.title }}{% endblock %}
+{% block h1 %}{{ page.title }}{% endblock %}
+
+{% block body %}
+
+    <p><a href="{{ path('admin_page_create') }}">Add new</a></p>
+
+    <!-- Media object -->
+
+    <div class="count">
+        <p>Found:  {{ pagination.getTotalItemCount }}</p>
+    </div>
+
+    <div class="container__content">
+        {{ page.preview }}
+    </div>
+
+    {% if page.image is not empty %}
+    <div class="container__media">
+        <img src="{{ params.image.url_path ~ '/big_' ~ page.image }}" alt="{{ page.title }}">
+    </div>
+    {% endif %}
+
+    <!-- Main content -->
+    <div class="container__content">
+        {{ page.body }}
+    </div>
+
+    {% include '@Page/frontend/preview_items.html.twig' with {items: pagination} %}
+
+{% endblock %}

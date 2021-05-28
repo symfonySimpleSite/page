@@ -13,3 +13,7 @@ admin_page_edit:
 admin_page_delete:
   path: /delete/{id}
   controller: 'SymfonySimpleSite\Page\Controller\AdminController::delete'
+
+admin_page_delete_image:
+  path: /delete-image/{id}
+  controller: 'SymfonySimpleSite\Page\Controller\AdminController::deletePageImage'
