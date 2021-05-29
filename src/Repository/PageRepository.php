@@ -37,6 +37,8 @@ class PageRepository extends ServiceEntityRepository
         $queryBuilder = $this
             ->getItemsQueryBuilder()
             ->andWhere("{$this->getAlias()}.isRecentlyPreview=:true")
+            ->andWhere("{$this->getAlias()}.url!=:url")
+            ->setParameter("url", "/")
             ->setParameter("true", true)
             ->setMaxResults($recentlyLength)
             ->orderBy("{$this->getAlias()}.createdDate", "DESC");

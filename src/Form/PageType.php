@@ -33,7 +33,7 @@ class PageType extends AbstractType
                 'choice_label' => 'title',
                 'query_builder' => function (PageRepository $pageRepository) {
                     return $pageRepository
-                        ->getItemsQueryBuilder(1)
+                        ->getItemsQueryBuilder()
                         ->orderBy("{$pageRepository->getAlias()}.createdDate", "ASC")
                         ;
                 }
