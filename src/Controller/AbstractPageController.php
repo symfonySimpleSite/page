@@ -27,11 +27,15 @@ abstract class AbstractPageController extends AbstractController
         LoggerInterface $logger
     ) {
         $this->entityManager = $entityManager;
-        $this->template = $getTemplateService->get(PageBundle::getConfigName());
+        $this->template = $getTemplateService->get($this->getPacketName());
         $this->slugger = $slugger;
         $this->logger = $logger;
     }
 
+    protected function getPacketName(): string
+    {
+        return PageBundle::getConfigName();
+    }
 
     protected function getTemplate(): string
     {

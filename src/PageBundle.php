@@ -4,8 +4,9 @@ namespace SymfonySimpleSite\Page;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use SymfonySimpleSite\Common\Interfaces\BundleInterface;
 
-class PageBundle extends Bundle
+class PageBundle extends Bundle implements BundleInterface
 {
     public function build(ContainerBuilder $container)
     {

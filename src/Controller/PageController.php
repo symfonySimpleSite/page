@@ -14,10 +14,13 @@ class PageController extends AbstractPageController
 {
     public function index(PageRepository $pageRepository): Response
     {
-        return $this->render('@Page/frontend/index.html.twig', [
-            'template' => $this->getTemplate(),
-            'params' => $this->get('parameter_bag')->get(PageBundle::getConfigName()),
-        ] + $pageRepository->getMainPage(5));
+        return $this->render(
+            '@Page/frontend/index.html.twig',
+            [
+                'template' => $this->getTemplate(),
+                'params' => $this->get('parameter_bag')->get(PageBundle::getConfigName()),
+            ] + $pageRepository->getMainPage(5)
+        );
     }
 
     public function detail(
@@ -25,8 +28,7 @@ class PageController extends AbstractPageController
         PaginatorInterface $paginator,
         PageRepository $pageRepository,
         ?string $url = null
-    ): Response
-    {
+    ): Response {
 
         if (empty($url)) {
             $url = 'page';
@@ -36,6 +38,11 @@ class PageController extends AbstractPageController
             $pageRepository->getItemsQueryBuilderByUrl($url)
                 ->getQuery()
                 ->getOneOrNullResult();
+
+
+        if (empty($page)) {
+            throw $this->createNotFoundException();
+        }
 
         $params = [
             'page' => $page,

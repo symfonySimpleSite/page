@@ -23,6 +23,8 @@ class PageRepository extends ServiceEntityRepository
             ->getItemsQueryBuilder()
             ->andWhere("{$this->getAlias()}.parent=:pageId")
             ->setParameter("pageId", $pageId)
+            ->andWhere("{$this->getAlias()}.url!=:url")
+            ->setParameter("url", "/")
             ->orderBy("{$this->getAlias()}.createdDate", "DESC");
         return $queryBuilder;
     }
