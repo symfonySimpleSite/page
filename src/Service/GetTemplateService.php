@@ -20,7 +20,6 @@ class GetTemplateService
     public function get(string $packetName, ?TemplateInterface $entity = null): string
     {
         $ret = $this->parameterBag->get($packetName);
-
         if (empty($ret['template']) || empty($ret['template']['default'])) {
             throw new \Exception('Can`t find parameter template.default');
         }
@@ -36,7 +35,5 @@ class GetTemplateService
         }
 
         return $ret['template']['default'];
-
-        dump($request, $ret); die;
     }
 }

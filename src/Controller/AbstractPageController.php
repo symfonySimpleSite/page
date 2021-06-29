@@ -15,7 +15,7 @@ abstract class AbstractPageController extends AbstractController
     public const FLUSH_SUCCESS_KEY = 'success';
     public const FLUSH_ERROR_KEY = 'error';
 
-    private string $template;
+    private string $template = '';
     private EntityManagerInterface $entityManager;
     private LoggerInterface $logger;
     private SluggerInterface $slugger;
