@@ -1,4 +1,4 @@
-{% extends template  %}
+{% extends 'admin_base.html.twig' %}
 
 {% block title %}Save Page{% endblock %}
 
@@ -6,22 +6,71 @@
 
 {% block body %}
     {{ form_start(form) }}
-    {{ form_row(form.type) }}
-    {{ form_row(form.parent) }}
-    {{ form_row(form.name) }}
-    {{ form_row(form.url) }}
-    {{ form_row(form.title) }}
-    {% if page.id is defined and page.id is not empty and page.image is not empty %}
+    <div class="row">
+        <div class="col-4">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Default</h3>
+                </div>
 
-        <img src="{{ params.image.url_path ~ '/small_' ~page.image }}">
-        <p><a href="{{ path('admin_page_delete_image', {id: page.id}) }}" onclick="return confirm('Delete image?')">Delete Image</a> </p>
-    {% endif %}
-    {{ form_row(form.image) }}
-    {{ form_row(form.isRecentlyPreview) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.preview) }}
-    {{ form_row(form.body) }}
-    <p><a href="{{ path('admin_page_index') }}">Cancel</a> | <button type="submit">Save</button> </p>
+                <div class="card-body">
+                    {{ form_row(form.name) }}
+                </div>
+            </div>
+
+            <div class="card card-default">
+                <div class="card-header">
+                    <h3 class="card-title">SEO</h3>
+                </div>
+                <div class="card-body">
+                    {{ form_row(form.url) }}
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.description) }}
+                    {{ form_row(form.isRecentlyPreview) }}
+                </div>
+            </div>
+
+            <div class="card card-default">
+                <div class="card-header">
+                    <h3 class="card-title">Image</h3>
+                </div>
+                <div class="card-body">
+                    {% if page.id is defined and page.id is not empty and page.image is not empty %}
+
+                        <img src="{{ params.image.url_path ~ '/small_' ~page.image }}">
+                        <p><a href="{{ path('admin_page_delete_image', {id: page.id}) }}"
+                              onclick="return confirm('Delete image?')">Delete Image</a></p>
+                    {% endif %}
+                    {{ form_row(form.image) }}
+                </div>
+            </div>
+
+            {% include '@Menu/elements/tree_block.html.twig' with {
+                    itemTemplate : '@Page/elements/tree_item.html.twig',
+                    itemsBottomTemplate : '@Page/elements/tree_bottom.html.twig'
+                }
+            %}
+
+
+
+        </div>
+        <div class="col-8">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Content Information</h3>
+                </div>
+
+                <div class="card-body">
+                    {{ form_row(form.preview) }}
+                    {{ form_row(form.body) }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <p><a href="{{ path('admin_page_index') }}">Cancel</a> |
+        <button class="btn btn-primary" type="submit">Save</button>
+    </p>
     {{ form_end(form) }}
 
 {% endblock %}

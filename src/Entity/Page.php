@@ -2,6 +2,7 @@
 
 namespace SymfonySimpleSite\Page\Entity;
 
+use SymfonySimpleSite\Menu\Entity\Menu;
 use SymfonySimpleSite\Page\Entity\Interfaces\ImageInterface;
 use SymfonySimpleSite\Page\Entity\Interfaces\RecentlyPreviewInterface;
 use SymfonySimpleSite\Page\Entity\Interfaces\TemplateInterface;
@@ -24,9 +25,6 @@ class Page implements ImageInterface, TemplateInterface, RecentlyPreviewInterfac
     use ImageTrait, TemplateTrait, RecentlyPreviewTrait;
 
     public const STATUS_ACTIVE = 1;
-    public const TYPE_PAGE = 1;
-    public const TYPE_SECTION = 2;
-    public const TYPE_URL = 3;
 
     /**
      * @ORM\Id
@@ -73,17 +71,13 @@ class Page implements ImageInterface, TemplateInterface, RecentlyPreviewInterfac
     /**
      * @ORM\Column(type="smallint")
      */
-    private ?int $type;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
     private ?int $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Page::class)
+     * @ORM\ManyToOne(targetEntity=Menu::class)
+     * @ORM\Column(nullable=true)
      */
-    private ?Page $parent = null;
+    private ?Menu $menu = null;
 
     /**
      * @ORM\Column(type="datetime")
@@ -179,18 +173,6 @@ class Page implements ImageInterface, TemplateInterface, RecentlyPreviewInterfac
         return $this;
     }
 
-    public function getType(): ?int
-    {
-        return $this->type;
-    }
-
-    public function setType(int $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
     public function getStatus(): ?int
     {
         return $this->status;
@@ -199,18 +181,6 @@ class Page implements ImageInterface, TemplateInterface, RecentlyPreviewInterfac
     public function setStatus(int $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getParent(): ?self
-    {
-        return $this->parent;
-    }
-
-    public function setParent(?Page $parent): self
-    {
-        $this->parent = $parent;
 
         return $this;
     }
@@ -227,12 +197,14 @@ class Page implements ImageInterface, TemplateInterface, RecentlyPreviewInterfac
         return $this;
     }
 
-    public static function getAllTypes(): array
+    public function getMenu(): ?Menu
     {
-        return [
-            'Page' =>self::TYPE_PAGE,
-            'Section' => self::TYPE_SECTION,
-            'Url' =>self::TYPE_URL,
-        ];
+        return $this->menu;
+    }
+
+    public function setMenu(?Menu $menu): self
+    {
+        $this->menu = $menu;
+        return $this;
     }
 }

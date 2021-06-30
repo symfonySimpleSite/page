@@ -3,6 +3,7 @@
 namespace SymfonySimpleSite\Page\Form;
 
 
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -21,23 +22,7 @@ class PageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('type', ChoiceType::class, [
-                'choices' => Page::getAllTypes()
-            ])
-            ->add('parent', EntityType::class, [
-                'required' => false,
-                'label' => 'Parent',
-                'empty_data' => '',
-                'class' => Page::class,
-                'choice_value' => 'id',
-                'choice_label' => 'title',
-                'query_builder' => function (PageRepository $pageRepository) {
-                    return $pageRepository
-                        ->getItemsQueryBuilder()
-                        ->orderBy("{$pageRepository->getAlias()}.createdDate", "ASC")
-                        ;
-                }
-            ])
+
             ->add('name')
             ->add('url', TextType::class, [
                 'required'=>false
@@ -46,7 +31,7 @@ class PageType extends AbstractType
                 'required'=>false
             ])
             ->add('image', FileType::class, [
-                'label' => 'Image (png|gif|jp(e)g file)',
+                'label' => 'Image (png /gif / jp(e)g file)',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -68,10 +53,10 @@ class PageType extends AbstractType
             ->add('description', TextareaType::class, [
                 'required'=>false
             ])
-            ->add('preview', TextareaType::class, [
+            ->add('preview', CKEditorType::class, [
                 'required'=>false
             ])
-            ->add('body', TextareaType::class, [
+            ->add('body', CKEditorType::class, [
                 'required'=>false
             ])
         ;

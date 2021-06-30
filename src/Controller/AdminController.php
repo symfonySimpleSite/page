@@ -5,6 +5,7 @@ namespace SymfonySimpleSite\Page\Controller;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use SymfonySimpleSite\Menu\Entity\Menu;
 use SymfonySimpleSite\Page\Entity\Page;
 use SymfonySimpleSite\Page\Form\PageType;
 use SymfonySimpleSite\Page\PageBundle;
@@ -39,6 +40,8 @@ class AdminController extends AbstractAdminController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getEntityManager();
+            $menuId = $request->request->getInt('menu', 0);
 
             if (empty($page->getUrl())) {
                 $page->setUrl($page->getName());
@@ -48,12 +51,15 @@ class AdminController extends AbstractAdminController
                 $page->setUrl($this->getSlugger()->slug($page->getUrl()));
             }
 
-            $entityManager = $this->getEntityManager();
 
-            if (empty($page->getParent()) && $page->getUrl() != "/") {
-                $page->setUrl('page');
-                $page->setType(Page::TYPE_SECTION);
-            }
+            if ($menuId == 0) {
+                $menu = $page->getMenu();
+                $page->setMenu(null);
+            } else {
+                $menu = $entityManager->find(Menu::class, $menuId);
+                $page->setMenu($menu);
+             }
+
 
             if (empty($page->getId())) {
                 $entityManager->persist($page);
@@ -63,8 +69,9 @@ class AdminController extends AbstractAdminController
             try {
                 $this->uploadImage($form, PageBundle::getConfigName(), $page);
                 $entityManager->flush();
-                $this->addFlash(self::FLUSH_SUCCESS_KEY, 'Data saved!');
                 $entityManager->commit();
+                $this->addFlash(self::FLUSH_SUCCESS_KEY, 'Data saved!');
+
                 return $this->redirectToRoute('admin_page_index');
             } catch (\Exception $exception) {
                 $this->getLogger()->error(
@@ -119,7 +126,7 @@ class AdminController extends AbstractAdminController
             $entityManager->flush();
             $entityManager->commit();
             $this->addFlash(self::FLUSH_SUCCESS_KEY, 'Image was deleted!');
-        }  catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             $entityManager->rollback();
             $this->getLogger()->error(
                 'admin_save_page', [
