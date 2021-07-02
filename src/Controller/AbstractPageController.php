@@ -33,6 +33,15 @@ abstract class AbstractPageController extends AbstractController
     }
 
 
+    protected function transliterate(?string $url, string $name): string
+    {
+        if (!empty($url)) {
+            return $url;
+        }
+
+        return $this->getSlugger()->slug($url)->lower()->toString();
+    }
+
     protected function getTemplate(): string
     {
         return $this->template;

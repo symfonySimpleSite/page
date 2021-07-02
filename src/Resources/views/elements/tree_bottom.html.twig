@@ -1,9 +1,13 @@
+
 <ul>
     <li>
         <div>
-            <div for="menu_0" style="float: left">None</div>
-            <input type="radio" name="menu" style="float: right" value="0" id="menu_0">
+            <div for="menu_0" style="float: left">Main Page</div>
+            <input type="radio" name="menu" style="float: right" value="0" id="menu_0"
+            {{ entity is empty ? 'checked' }}
+            >
             <div style="clear: both"></div>
         </div>
+
     </li>
 </ul>

@@ -24,6 +24,7 @@ class PageType extends AbstractType
         $builder
 
             ->add('name')
+            ->add('position')
             ->add('url', TextType::class, [
                 'required'=>false
             ])

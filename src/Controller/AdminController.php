@@ -5,7 +5,9 @@ namespace SymfonySimpleSite\Page\Controller;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use SymfonySimpleSite\Common\Interfaces\StatusInterface;
 use SymfonySimpleSite\Menu\Entity\Menu;
+use SymfonySimpleSite\Menu\Repository\MenuRepository;
 use SymfonySimpleSite\Page\Entity\Page;
 use SymfonySimpleSite\Page\Form\PageType;
 use SymfonySimpleSite\Page\PageBundle;
@@ -28,8 +30,11 @@ class AdminController extends AbstractAdminController
         ]);
     }
 
-    public function save(Request $request, ?Page $page = null): Response
-    {
+    public function save(
+        Request $request,
+        MenuRepository $menuRepository,
+        ?Page $page = null
+    ): Response {
         if (empty($page)) {
             $page = new Page();
             $page->setCreatedDate(new \DateTime('now'));
@@ -48,16 +53,21 @@ class AdminController extends AbstractAdminController
             }
 
             if ($page->getUrl() != "/") {
-                $page->setUrl($this->getSlugger()->slug($page->getUrl()));
+                $page->setUrl($this->transliterate($page->getUrl(), $page->getName()));
             }
 
-
             if ($menuId == 0) {
-                $menu = $page->getMenu();
                 $page->setMenu(null);
             } else {
                 $menu = $entityManager->find(Menu::class, $menuId);
-                $page->setMenu($menu);
+                $newMenu = new Menu();
+                $newMenu->setName($page->getName());
+                $newMenu->setUrl($page->getUrl());
+                $newMenu->setStatus(StatusInterface::STATUS_ACTIVE);
+                $newMenu->setCreatedAt(new \DateTime('now'));
+                $menuRepository->create($newMenu, $menu);
+
+                $page->setMenu($newMenu);
              }
 
 

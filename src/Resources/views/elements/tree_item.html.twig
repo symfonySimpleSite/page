@@ -1,6 +1,7 @@
 <div>
     <div for="menu_{{ item.id }}" style="float: left"> {{ item.name }} </div>
-    <input type="radio" name="menu" style="float: right" value="{{ item.id }}" id="menu_{{ item.id }}">
+    <input type="radio" name="menu" style="float: right" value="{{ item.id }}" id="menu_{{ item.id }}"
+    {{ entity is defined and entity.id is defined and entity.id == item.id ? 'checked' }}>
     <div style="clear: both"></div>
 </div>
 

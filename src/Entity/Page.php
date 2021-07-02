@@ -74,8 +74,8 @@ class Page implements ImageInterface, TemplateInterface, RecentlyPreviewInterfac
     private ?int $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Menu::class)
-     * @ORM\Column(nullable=true)
+     * @ORM\ManyToOne(targetEntity=Menu::class, cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private ?Menu $menu = null;
 
@@ -83,6 +83,11 @@ class Page implements ImageInterface, TemplateInterface, RecentlyPreviewInterfac
      * @ORM\Column(type="datetime")
      */
     private ? \DateTime $createdDate;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private ?int $position = 0;
 
     public function getId(): ?int
     {
@@ -207,4 +212,21 @@ class Page implements ImageInterface, TemplateInterface, RecentlyPreviewInterfac
         $this->menu = $menu;
         return $this;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    /**
+     * @param int|null $position
+     */
+    public function setPosition(?int $position): void
+    {
+        $this->position = $position;
+    }
+
 }

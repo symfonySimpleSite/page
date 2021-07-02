@@ -1,9 +1,9 @@
-page_index:
+page_main_page:
   path: /
-  controller: 'SymfonySimpleSite\Page\Controller\PageController::index'
+  controller: 'SymfonySimpleSite\Page\Controller\PageController::mainPage'
 
 page_detail:
   path: /page/{url?}
   requirements:
-    path: '^([a-z-0-9\.\-\/]+)$'
+    url: '^([a-z-0-9\.\-\/]+)$'
   controller: 'SymfonySimpleSite\Page\Controller\PageController::detail'

@@ -15,6 +15,7 @@
 
                 <div class="card-body">
                     {{ form_row(form.name) }}
+                    {{ form_row(form.position) }}
                 </div>
             </div>
 
@@ -47,7 +48,8 @@
 
             {% include '@Menu/elements/tree_block.html.twig' with {
                     itemTemplate : '@Page/elements/tree_item.html.twig',
-                    itemsBottomTemplate : '@Page/elements/tree_bottom.html.twig'
+                    itemsBottomTemplate : '@Page/elements/tree_bottom.html.twig',
+                    entity: page.menu
                 }
             %}
 

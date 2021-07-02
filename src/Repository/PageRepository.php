@@ -27,36 +27,31 @@ class PageRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
-    public function getMainPage(int $recentlyLength): array
+
+    public function getMainPage(int $length): array
     {
-        $page = $this->getItemsQueryBuilderByUrl("/")->getQuery()->getOneOrNullResult();
-        if (empty($page)) {
-            return [];
-        }
-
         $queryBuilder = $this
-            ->getItemsQueryBuilder()
-            ->andWhere("{$this->getAlias()}.isRecentlyPreview=:true")
-            ->andWhere("{$this->getAlias()}.url!=:url")
-            ->setParameter("url", "/")
-            ->setParameter("true", true)
-            ->setMaxResults($recentlyLength)
-            ->orderBy("{$this->getAlias()}.createdDate", "DESC");
-
-        return [
-            'page' => $page,
-            'pageItems' => $this->getItemsQueryBuilderByParentId($page->getId()),
-            'recentlyItems' => $queryBuilder->getQuery()->getResult()
-        ];
+            ->getItemsQueryBuilderByUrl(null)
+            ->setMaxResults(30)
+            ->orderBy("{$this->getAlias()}.position", "ASC")
+        ;
+        return $queryBuilder->getQuery()->getResult();
     }
 
-    public function getItemsQueryBuilderByUrl(string $url): QueryBuilder
+    public function getItemsQueryBuilderByUrl(?string $url): QueryBuilder
     {
-        $queryBuilder = $this
-            ->getItemsQueryBuilder()
-            ->andWhere("{$this->getAlias()}.url=:url")
-            ->setParameter("url", $url)
-            ->orderBy("{$this->getAlias()}.createdDate", "DESC");
+        $queryBuilder = $this->getItemsQueryBuilder();
+        $queryBuilder->leftJoin("{$this->getAlias()}.menu", 'm');
+
+        if ($url === null) {
+            $queryBuilder->andWhere("{$this->getAlias()}.menu IS NULL");
+        } else {
+            $queryBuilder
+                ->andWhere("m.url=:url")
+                ->setParameter("url", $url);
+        }
+
+        $queryBuilder->orderBy("{$this->getAlias()}.createdDate", "DESC");
         return $queryBuilder;
     }
 

@@ -10,8 +10,8 @@
     <div class="count">
       <p>Found:  {{ pagination.getTotalItemCount }}</p>
     </div>
-    <table border="1" width="100%">
-        <tr bgcolor="#c0c0c0">
+    <table class="table table-bordered">
+        <tr>
             {# sorting of properties based on query components #}
             <th>{{ knp_pagination_sortable(pagination, 'Id', alias~'.id') }}</th>
             <th{% if pagination.isSorted(alias~'.Title') %} class="sorted"{% endif %}>
