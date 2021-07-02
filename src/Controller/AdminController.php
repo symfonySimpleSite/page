@@ -60,14 +60,23 @@ class AdminController extends AbstractAdminController
                 $page->setMenu(null);
             } else {
                 $menu = $entityManager->find(Menu::class, $menuId);
-                $newMenu = new Menu();
-                $newMenu->setName($page->getName());
-                $newMenu->setUrl($page->getUrl());
-                $newMenu->setStatus(StatusInterface::STATUS_ACTIVE);
-                $newMenu->setCreatedAt(new \DateTime('now'));
-                $menuRepository->create($newMenu, $menu);
 
-                $page->setMenu($newMenu);
+                if (empty($page->getMenu())) {
+                    $newMenu = new Menu();
+                    $newMenu->setName($page->getName());
+                    $newMenu->setUrl($page->getUrl());
+                    $newMenu->setStatus(StatusInterface::STATUS_ACTIVE);
+                    $newMenu->setCreatedAt(new \DateTime('now'));
+                    $menuRepository->create($newMenu, $menu);
+                    $this->setMenuUrlPath($menu, $menuRepository);
+                    $page->setMenu($newMenu);
+                } elseif ($menu->getId() != $page->getMenu()->getId()) {
+
+                    $page->getMenu()->setUrl($page->getUrl());
+                    $menuRepository->move($page->getMenu(), $menu);
+                    $this->setMenuUrlPath($page->getMenu(), $menuRepository);
+                }
+
              }
 
 

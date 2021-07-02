@@ -5,6 +5,8 @@ namespace SymfonySimpleSite\Page\Controller;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Symfony\Component\Form\Form;
+use SymfonySimpleSite\Menu\Entity\Interfaces\MenuInterface;
+use SymfonySimpleSite\Menu\Repository\MenuRepository;
 use SymfonySimpleSite\Page\Entity\Interfaces\ImageInterface;
 
 class AbstractAdminController extends AbstractPageController
@@ -96,6 +98,37 @@ class AbstractAdminController extends AbstractPageController
                 $entity->setImage($newFilename);
             }
         }
+    }
+
+    protected function setMenuUrlPath(MenuInterface $menu, MenuRepository $menuRepository, string $separator = '/'): void
+    {
+        $urlByName = $this->transliterate($menu->getUrl(), $menu->getName());
+        $menu->setUrl($urlByName);
+
+        $items = $menuRepository
+            ->getAllQueryBuilder($menu)
+            ->andWhere("{$menuRepository->getAlias()}.url IS NOT NULL")
+            ->getQuery()
+            ->getResult();
+
+        foreach ($items as $item) {
+
+            $parents = $menuRepository
+                ->getParentsByItemQueryBuilder($item)
+                ->andWhere("{$menuRepository->getAlias()}.url IS NOT NULL")
+                ->getQuery()
+                ->getResult();
+            ;
+            if (!empty($parents)) {
+
+                $path = '';
+                foreach ($parents as $parent) {
+                    $path .= $separator . $parent->getUrl();
+                }
+                $item->setPath($path);
+            }
+        }
+
     }
 
 }
