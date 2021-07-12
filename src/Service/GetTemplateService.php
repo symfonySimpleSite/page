@@ -34,9 +34,6 @@ class GetTemplateService
         if (!empty($entity)) {
             return $entity->getTemplate();
         }
-
         return $ret['template']['default'];
-
-        dump($request, $ret); die;
     }
 }

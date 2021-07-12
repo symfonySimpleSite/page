@@ -82,7 +82,7 @@ class Page implements ImageInterface, TemplateInterface, RecentlyPreviewInterfac
     /**
      * @ORM\Column(type="datetime")
      */
-    private ? \DateTime $createdDate;
+    private ?\DateTime $createdDate;
 
     /**
      * @ORM\Column(type="integer")

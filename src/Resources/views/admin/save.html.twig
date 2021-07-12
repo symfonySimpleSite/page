@@ -16,6 +16,7 @@
                 <div class="card-body">
                     {{ form_row(form.name) }}
                     {{ form_row(form.position) }}
+                    {{ form_row(form.template) }}
                 </div>
             </div>
 
@@ -30,6 +31,16 @@
                     {{ form_row(form.isRecentlyPreview) }}
                 </div>
             </div>
+
+            {% include '@Menu/elements/tree_block.html.twig' with {
+                    itemTemplate : '@Page/elements/tree_item.html.twig',
+                    itemsBottomTemplate : '@Page/elements/tree_bottom.html.twig',
+                    entity: page.menu
+                }
+            %}
+
+        </div>
+        <div class="col-8">
 
             <div class="card card-default">
                 <div class="card-header">
@@ -46,17 +57,6 @@
                 </div>
             </div>
 
-            {% include '@Menu/elements/tree_block.html.twig' with {
-                    itemTemplate : '@Page/elements/tree_item.html.twig',
-                    itemsBottomTemplate : '@Page/elements/tree_bottom.html.twig',
-                    entity: page.menu
-                }
-            %}
-
-
-
-        </div>
-        <div class="col-8">
             <div class="card card-success">
                 <div class="card-header">
                     <h3 class="card-title">Content Information</h3>

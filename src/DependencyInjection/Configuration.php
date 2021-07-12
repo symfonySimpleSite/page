@@ -26,7 +26,8 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('template')->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('default')->defaultTrue()->defaultValue('base.html.twig')->end()
-                        ->scalarNode('site_index')->defaultTrue()->defaultValue('base.html.twig')->end()
+                        ->scalarNode('Main Page')->defaultTrue()->defaultValue('@Page/frontend/main_page.html.twig')->end()
+                        ->scalarNode('Show parent previews')->defaultTrue()->defaultValue('@Page/frontend/with_parent_previews_page.html.twig')->end()
                     ->end()
                 ->end()
             ->end();

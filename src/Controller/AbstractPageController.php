@@ -39,7 +39,7 @@ abstract class AbstractPageController extends AbstractController
             return $url;
         }
 
-        return $this->getSlugger()->slug($url)->lower()->toString();
+        return $this->getSlugger()->slug($name)->lower()->toString();
     }
 
     protected function getTemplate(): string
